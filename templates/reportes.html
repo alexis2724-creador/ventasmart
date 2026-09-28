@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<header>
+    <h1>Estadísticas y Reportes</h1>
+</header>
+
+<div class="grid-cards">
+    <div class="card white">
+        <h4>Ganancia de Hoy</h4>
+        <p class="big-number text-blue">${{ "%.2f"|format(ganancia_diaria) }}</p>
+    </div>
+    <div class="card white">
+        <h4>Ganancia Esta Semana</h4>
+        <p class="big-number text-blue">${{ "%.2f"|format(ganancia_semanal) }}</p>
+    </div>
+    <div class="card white">
+        <h4>Ganancia Este Mes</h4>
+        <p class="big-number text-blue">${{ "%.2f"|format(ganancia_mensual) }}</p>
+    </div>
+</div>
+
+<div class="grid-cards mt-2">
+    <div class="card white" style="grid-column: span 2;">
+        <h3>Rendimiento por Producto</h3>
+        <table class="mt-2">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Unidades Vendidas</th>
+                    <th>Ganancia Generada</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nombre, stats in stats_productos.items() %}
+                <tr>
+                    <td>{{ nombre }}</td>
+                    <td>{{ stats.cantidad }}</td>
+                    <td class="text-green">${{ "%.2f"|format(stats.utilidad) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card dark-blue">
+        <h3>🏆 Producto Más Rentable</h3>
+        <p class="big-number mt-2" style="font-size: 1.5rem;">{{ producto_rentable }}</p>
+        <p style="opacity: 0.8; margin-top: 10px;">El producto que más dinero ha dejado a tu negocio.</p>
+    </div>
+</div>
+{% endblock %}

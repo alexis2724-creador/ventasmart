@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<header>
+    <h1>Control de Inventario</h1>
+</header>
+
+<div class="card-form">
+    <h3>Agregar Nuevo Producto</h3>
+    <form action="{{ url_for('inventario') }}" method="POST" class="form-inline">
+        <input type="text" name="nombre" placeholder="Nombre (Ej. Takis)" required>
+        <input type="number" step="0.01" name="precio_compra" placeholder="Costo Unitario ($)" required>
+        <input type="number" step="0.01" name="precio_venta" placeholder="Precio Venta ($)" required>
+        <input type="number" name="cantidad" placeholder="Cantidad" required>
+        <button type="submit" class="btn-primary">Guardar</button>
+    </form>
+</div>
+
+<div class="table-container mt-2">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Costo</th>
+                <th>Venta</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in productos %}
+            <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.nombre }}</td>
+                <td>${{ "%.2f"|format(p.precio_compra) }}</td>
+                <td>${{ "%.2f"|format(p.precio_venta) }}</td>
+                <td><span class="badge {% if p.cantidad == 0 %}badge-danger{% else %}badge-success{% endif %}">{{ p.cantidad }}</span></td>
+                <td>
+                    <a href="{{ url_for('eliminar_producto', id=p.id) }}" class="btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminarlo?');">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

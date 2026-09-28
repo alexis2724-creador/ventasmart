@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<header>
+    <h1>Punto de Venta</h1>
+</header>
+
+<div class="card-form">
+    <h3>Registrar Venta</h3>
+    <form action="{{ url_for('ventas') }}" method="POST" class="form-inline">
+        <select name="producto_id" required>
+            <option value="">Selecciona un producto...</option>
+            {% for p in productos %}
+            <option value="{{ p.id }}">{{ p.nombre }} (Disp: {{ p.cantidad }} | Precio: ${{ p.precio_venta }})</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="cantidad" placeholder="Cantidad a vender" min="1" required>
+        <button type="submit" class="btn-success">Completar Venta</button>
+    </form>
+</div>
+
+<h3 class="mt-2">Últimas Ventas</h3>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha/Hora</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Ingreso</th>
+                <th>Utilidad (Ganancia)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in historial %}
+            <tr>
+                <td>{{ v.fecha.strftime('%d/%m/%Y %H:%M') }}</td>
+                <td>{{ v.producto.nombre }}</td>
+                <td>{{ v.cantidad }}</td>
+                <td>${{ "%.2f"|format(v.ingreso) }}</td>
+                <td style="color: #10b981; font-weight: bold;">+${{ "%.2f"|format(v.utilidad) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
