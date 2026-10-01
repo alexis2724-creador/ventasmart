@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Producto - VentaSmart</title>
+    <title>Editar Producto - VentasSmart</title>
     <!-- Tus estilos CSS -->
 </head>
 <body>
@@ -11,10 +11,13 @@
         <form method="POST">
             <label>Nombre:</label>
             <input type="text" name="nombre" value="{{ producto.nombre }}" required>
-            
+
+            <label>Costo:</label>
+            <input type="number" step="0.01" name="costo" value="{{ producto.costo }}" required>
+
             <label>Precio:</label>
             <input type="number" step="0.01" name="precio" value="{{ producto.precio }}" required>
-            
+
             <label>Cantidad:</label>
             <input type="number" name="cantidad" value="{{ producto.cantidad }}" required>
             

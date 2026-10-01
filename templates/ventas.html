@@ -1,46 +1,51 @@
-{% extends 'base.html' %}
-{% block content %}
-<header>
-    <h1>Punto de Venta</h1>
-</header>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas - VentasSmart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Barra Lateral -->
+    <aside class="sidebar">
+        <div>
+            <h2>VentasSmart</h2>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('inventario') }}">Inventario</a></li>
+                <li><a href="{{ url_for('ventas') }}" class="active">Ventas</a></li>
+                <li><a href="{{ url_for('estadisticas') }}">Estadísticas</a></li>
+            </ul>
+        </div>
+        <div>
+            <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+        </div>
+    </aside>
 
-<div class="card-form">
-    <h3>Registrar Venta</h3>
-    <form action="{{ url_for('ventas') }}" method="POST" class="form-inline">
-        <select name="producto_id" required>
-            <option value="">Selecciona un producto...</option>
-            {% for p in productos %}
-            <option value="{{ p.id }}">{{ p.nombre }} (Disp: {{ p.cantidad }} | Precio: ${{ p.precio_venta }})</option>
-            {% endfor %}
-        </select>
-        <input type="number" name="cantidad" placeholder="Cantidad a vender" min="1" required>
-        <button type="submit" class="btn-success">Completar Venta</button>
-    </form>
-</div>
+    <!-- Contenido Principal -->
+    <main class="main-content" style="margin-left: 250px; padding: 20px;">
+        <div class="container" style="max-width: 1000px; margin: 0 auto;">
+            <h2>Punto de Venta</h2>
+            <p style="color: #666; margin-bottom: 20px;">Registra una venta para descontar stock automáticamente</p>
 
-<h3 class="mt-2">Últimas Ventas</h3>
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Fecha/Hora</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Ingreso</th>
-                <th>Utilidad (Ganancia)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for v in historial %}
-            <tr>
-                <td>{{ v.fecha.strftime('%d/%m/%Y %H:%M') }}</td>
-                <td>{{ v.producto.nombre }}</td>
-                <td>{{ v.cantidad }}</td>
-                <td>${{ "%.2f"|format(v.ingreso) }}</td>
-                <td style="color: #10b981; font-weight: bold;">+${{ "%.2f"|format(v.utilidad) }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
+            <!-- Formulario de Registro de Venta -->
+            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                <h3 style="margin-top: 0; margin-bottom: 15px; color: #333;">Registrar Venta</h3>
+                <form method="POST" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <select name="producto_id" required style="flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background: white;">
+                        <option value="" disabled selected>Selecciona un producto...</option>
+                        {% for p in productos %}
+                        <option value="{{ p.id }}">{{ p.nombre }} (Stock: {{ p.cantidad }})</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <input type="number" name="cantidad" placeholder="Cantidad a vender" min="1" required style="width: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                    
+                    <button type="submit" style="background: #16a34a; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Completar Venta</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
