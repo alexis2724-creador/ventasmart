@@ -1,37 +1,57 @@
-{% extends 'base.html' %}
-{% block content %}
-<header>
-    <h1>Dashboard Principal</h1>
-    <p>Resumen general de tu negocio</p>
-</header>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - VentaSmart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Barra Lateral -->
+    <aside class="sidebar">
+        <div>
+            <h2>VentaSmart</h2>
+            <ul>
+                <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
+                <li><a href="{{ url_for('inventario') }}">Inventario</a></li>
+                <li><a href="#">Ventas</a></li>
+                <li><a href="#">Estadísticas</a></li>
+            </ul>
+        </div>
+        <div>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Cerrar Sesión</a>
+        </div>
+    </aside>
 
-<div class="grid-cards">
-    <div class="card dark-blue">
-        <h3><i class="fas fa-wallet"></i> Capital Invertido</h3>
-        <p class="big-number">${{ "%.2f"|format(capital_invertido) }}</p>
-    </div>
-    <div class="card blue">
-        <h3><i class="fas fa-coins"></i> Ingresos Totales</h3>
-        <p class="big-number">${{ "%.2f"|format(ingresos_totales) }}</p>
-    </div>
-    <div class="card green">
-        <h3><i class="fas fa-hand-holding-usd"></i> Ganancias Totales</h3>
-        <p class="big-number">${{ "%.2f"|format(ganancias_totales) }}</p>
-    </div>
-</div>
+    <!-- Contenido Principal Dashboard -->
+    <main class="main-content">
+        <header>
+            <h1>Dashboard Principal</h1>
+            <p>Resumen general de tu negocio</p>
+        </header>
 
-<div class="grid-cards mt-2">
-    <div class="card white">
-        <h4>Productos Disponibles</h4>
-        <p class="medium-number">{{ productos_disponibles }}</p>
-    </div>
-    <div class="card white">
-        <h4>Productos Agotados</h4>
-        <p class="medium-number" style="color: #ef4444;">{{ productos_agotados }}</p>
-    </div>
-    <div class="card white">
-        <h4>Más Vendido</h4>
-        <p class="medium-text">{{ producto_mas_vendido }}</p>
-    </div>
-</div>
-{% endblock %}
+        <!-- Tarjetas de Métricas -->
+        <section class="financial-summary">
+            <div class="card">
+                <h3>Capital Invertido</h3>
+                <p>$ {{ "%.2f"|format(total_inversion) }}</p>
+            </div>
+            <div class="card" style="border-left-color: #2563eb;">
+                <h3>Ganancias Totales</h3>
+                <p>$ {{ "%.2f"|format(total_ganancias) }}</p>
+            </div>
+        </section>
+
+        <section class="financial-summary" style="margin-top: 20px;">
+            <div class="card" style="border-left-color: #10b981;">
+                <h3>Productos Registrados</h3>
+                <p>{{ total_productos }}</p>
+            </div>
+            <div class="card" style="border-left-color: #f59e0b;">
+                <h3>Unidades en Stock</h3>
+                <p>{{ productos_disponibles }}</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión - VentaSmart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="main-content" style="max-width: 400px; margin: 50px auto; text-align: center;">
+        <h2>Iniciar Sesión</h2>
+        
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        
+        <form method="POST">
+            <label>Usuario:</label><br>
+            <input type="text" name="username" required style="width: 100%; padding: 8px; margin: 10px 0;"><br>
+            
+            <label>Contraseña:</label><br>
+            <input type="password" name="password" required style="width: 100%; padding: 8px; margin: 10px 0;"><br>
+            
+            <button type="submit" style="width: 100%; padding: 10px; background: #111827; color: white; border: none; border-radius: 5px;">Entrar</button>
+        </form>
+        
+        <br>
+        <p>¿No tienes cuenta? <a href="/registro">Regístrate aquí</a></p>
+    </div>
+</body>
+</html>
