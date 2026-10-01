@@ -8,6 +8,11 @@ app.config['SECRET_KEY'] = 'ventassmart_secret_0727'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ventasmart.db'
 
 db = SQLAlchemy(app)
+
+# CREAR LAS TABLAS AUTOMÁTICAMENTE AL ARANCAR EL SERVIDOR
+with app.app_context():
+    db.create_all()
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -197,10 +202,3 @@ def registro():
 def logout():
     logout_user()
     return redirect(url_for('login'))
-
-# Esto crea las tablas automáticamente tanto en local como en Render
-with app.app_context():
-    db.create_all()
-
-if __name__ == '__main__':
-    app.run(debug=True)
