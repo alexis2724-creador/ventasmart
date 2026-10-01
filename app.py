@@ -8,14 +8,13 @@ app.config['SECRET_KEY'] = 'ventassmart_secret_0727'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ventasmart.db'
 
 db = SQLAlchemy(app)
-
-# CREAR LAS TABLAS AUTOMÁTICAMENTE AL ARANCAR EL SERVIDOR
-with app.app_context():
-    db.create_all()
-
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+# Esto asegura que las tablas se creen sin importar cómo arranque Gunicorn
+with app.app_context():
+    db.create_all()
 
 # Modelos de la Base de Datos
 class User(UserMixin, db.Model):
