@@ -227,6 +227,7 @@ def ventas():
           cantidad=cantidad_vendida,
           ingreso=ingreso,
           ganancia=ganancia,
+          fecha=datetime.now(),
           user_id=current_user.id,
       )
       db.session.add(nueva_venta)
@@ -249,24 +250,24 @@ def ventas():
 def estadisticas():
   ventas = Sale.query.filter_by(user_id=current_user.id).all()
 
-  # Sumamos y redondeamos a 2 decimales para evitar los chorizos de ceros
   ganancia_diaria = round(sum(v.ganancia for v in ventas), 2)
-  ganancia_semanal = round(
-      sum(v.ganancia for v in ventas), 2
-  )  # Puedes filtrar por fecha si gustas luego
+  ganancia_semanal = round(sum(v.ganancia for v in ventas), 2)
   ganancia_mensual = round(sum(v.ganancia for v in ventas), 2)
+
+  # Calculamos el ingreso total de todas las ventas realizadas
+  ingreso_total = round(sum(v.ingreso for v in ventas), 2)
 
   producto_rentable = None
   if ventas:
-    # Agrupamos ganancias por nombre de producto para sacar el más rentable de verdad
     from collections import defaultdict
 
     rentabilidad_productos = defaultdict(float)
     for v in ventas:
       rentabilidad_productos[v.producto_nombre] += v.ganancia
 
-    # Encontramos el que tenga mayor ganancia acumulada
-    mejor_nombre = max(rentabilidad_productos, key=rentabilidad_productos.get)
+    mejor_nombre = max(
+        rentabilidad_productos, key=rentabilidad_productos.get
+    )
     mejor_ganancia = round(rentabilidad_productos[mejor_nombre], 2)
 
     class ProductoRentableMock:
@@ -282,6 +283,7 @@ def estadisticas():
       ganancia_diaria=ganancia_diaria,
       ganancia_semanal=ganancia_semanal,
       ganancia_mensual=ganancia_mensual,
+      ingreso_total=ingreso_total,
       producto_rentable=producto_rentable,
   )
 
